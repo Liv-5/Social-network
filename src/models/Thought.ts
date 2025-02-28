@@ -1,5 +1,37 @@
 import { Schema, model, type Document } from "mongoose";
 
+interface IReactions extends Document {
+  reactionBody: string;
+  createdAt: Date;
+  username: string;
+}
+
+const reactionsSchema = new Schema<IReactions>(
+  {
+    reactionBody: {
+      type: String,
+      required: true,
+      min_length: 1,
+      max_length: 280,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      //need a getter mehtod to format the timestamp on query
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    toJSON: {
+      getters: true,
+    },
+    timestamps: true,
+  }
+);
+
 interface IThoughts extends Document {
   thoughtText: string;
   createdAt: Date;
@@ -24,7 +56,7 @@ const thoughtsSchema = new Schema<IThoughts>(
       type: String,
       required: true,
     },
-    reactions: [reactionSchema],
+    reactions: [reactionsSchema],
   },
   {
     toJSON: {

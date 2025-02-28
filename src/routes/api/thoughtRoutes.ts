@@ -6,6 +6,8 @@ import {
   createThought,
   updateThought,
   deleteThought,
+  createReaction,
+  removeReaction,
 } from "../../controllers/thoughtController.js";
 
 // /api/thoughts
@@ -17,5 +19,12 @@ router
   .get(getThoughtById)
   .put(updateThought)
   .delete(deleteThought);
+
+//  /api/thoughts/:thoughtId/reactions
+
+router
+  .route(":thoughtId/reactions")
+  .post(createReaction)
+  .delete(removeReaction);
 
 export { router as thoughtRouter };

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
-import { User, Thought } from "../models/index.js";
+// import { ObjectId } from "mongodb";
+import { User } from "../models/index.js";
 
 export const totalUsers = async () => {
   const numberOfUsers = await User.aggregate().count("numberOfUsers");
