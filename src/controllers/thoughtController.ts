@@ -37,7 +37,7 @@ export const createThought = async (req: Request, res: Response) => {
       thoughtText,
       createdAt,
       username,
-    });
+    }); // newthought._id is object id for created thought, find by username
     res.status(201).json(newThought);
   } catch (error: any) {
     res.status(400).json({
