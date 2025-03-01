@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Thought, User } from "../models/index.js";
+
 export const getAllThoughts = async (_req: Request, res: Response) => {
   try {
     const thoughts = await Thought.find();
@@ -138,7 +139,6 @@ export const createReaction = async (req: Request, res: Response) => {
       { new: true, runValidators: true }
     );
 
-    // newthought._id is object id for created thought, find by username
     res.status(201).json(newReaction);
   } catch (error: any) {
     res.status(400).json({

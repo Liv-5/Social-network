@@ -42,6 +42,10 @@ const userSchema = new Schema<IUser>(
   }
 );
 
+userSchema.virtual("friendCount").get(function () {
+  return this.friends.length;
+});
+
 const User = model<IUser>("User", userSchema);
 
 export default User;

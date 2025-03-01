@@ -81,3 +81,72 @@ export const updateUser = async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 };
+
+export const addFriend = async (req: Request, res: Response) => {
+  try {
+    const { userId, friendId } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { friends: friendId } }, // $addToSet prevents duplicates
+      { new: true }
+    ).populate("friends", "-__v");
+
+    // const { username, friendId } = req.body;
+    // const { friendId } = req.params;
+
+    // const newFriend = {
+    //   username,
+    //   friendId,
+    // };
+
+    // await User.findByIdAndUpdate(
+    //   userId,
+    //   { $push: { friends: newFriend } },
+    //   { new: true, runValidators: true }
+    // );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    res.status(201).json(updateUser);
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+export const removeFriend = async (req: Request, res: Response) => {
+  try {
+    const { userId, friendId } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { friends: friendId } }, // $pull removes the friendId from friends array
+      { new: true }
+    ).populate("friends", "-__v");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    res.json(updatedUser);
+
+    // try {
+    //   const user = await User.findOneAndUpdate(
+    //     { _id: req.params.userId },
+    //     { $pull: { friends: { friendId: req.body.friendId } } },
+    //     { new: true }
+    //   );
+
+    //   if (!friendId) {
+    //     res.status(404).json({ message: "No friend with this id!" });
+    //   }
+
+    //   res.json(friendId);
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};

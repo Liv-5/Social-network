@@ -17,7 +17,8 @@ const reactionsSchema = new Schema<IReactions>(
     createdAt: {
       type: Date,
       default: Date.now,
-      //need a getter mehtod to format the timestamp on query
+
+      //need a getter method to format the timestamp on query
     },
     username: {
       type: String,
@@ -29,6 +30,7 @@ const reactionsSchema = new Schema<IReactions>(
       getters: true,
     },
     timestamps: true,
+    id: false,
   }
 );
 
@@ -63,8 +65,13 @@ const thoughtSchema = new Schema<IThought>(
       getters: true,
     },
     timestamps: true,
+    id: false,
   }
 );
+
+thoughtSchema.virtual("reactionCount").get(function () {
+  return this.reactions.length;
+});
 
 const Thought = model("Thought", thoughtSchema);
 
