@@ -109,9 +109,9 @@ export const addFriend = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "User not found!" });
     }
 
-    res.status(201).json(updateUser);
+    return res.status(201).json({ updateUser, message: "friend added!" });
   } catch (error: any) {
-    res.status(400).json({
+    return res.status(400).json({
       message: error.message,
     });
   }
@@ -129,8 +129,7 @@ export const removeFriend = async (req: Request, res: Response) => {
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found!" });
     }
-
-    res.json(updatedUser);
+    return res.json(updatedUser);
 
     // try {
     //   const user = await User.findOneAndUpdate(
@@ -145,7 +144,7 @@ export const removeFriend = async (req: Request, res: Response) => {
 
     //   res.json(friendId);
   } catch (error: any) {
-    res.status(400).json({
+    return res.status(400).json({
       message: error.message,
     });
   }
