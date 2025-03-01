@@ -32,14 +32,14 @@ const reactionsSchema = new Schema<IReactions>(
   }
 );
 
-interface IThoughts extends Document {
+interface IThought extends Document {
   thoughtText: string;
   createdAt: Date;
   username: string;
   reactions: Schema.Types.ObjectId[];
 }
 
-const thoughtsSchema = new Schema<IThoughts>(
+const thoughtSchema = new Schema<IThought>(
   {
     thoughtText: {
       type: String,
@@ -66,6 +66,6 @@ const thoughtsSchema = new Schema<IThoughts>(
   }
 );
 
-const Thoughts = model("Thoughts", thoughtsSchema);
+const Thought = model("Thought", thoughtSchema);
 
-export default Thoughts;
+export default Thought;
