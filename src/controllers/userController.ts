@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongodb";
-import { User, Thought } from "../models/index.js";
+// import { ObjectId } from "mongodb";
+import { User } from "../models/index.js";
 
 export const totalUsers = async () => {
   const numberOfUsers = await User.aggregate().count("numberOfUsers");
@@ -79,5 +79,46 @@ export const updateUser = async (req: Request, res: Response) => {
     res.json(user);
   } catch (err) {
     res.status(500).json(err);
+  }
+};
+
+export const addFriend = async (req: Request, res: Response) => {
+  try {
+    const { userId, friendId } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { friends: friendId } }, // $addToSet prevents duplicates
+      { new: true }
+    ).populate("friends", "-__v");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    return res.status(201).json({ updateUser, message: "friend added!" });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+export const removeFriend = async (req: Request, res: Response) => {
+  try {
+    const { userId, friendId } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { friends: friendId } }, // $pull removes the friendId from friends array
+      { new: true }
+    ).populate("friends", "-__v");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    return res.json(updatedUser);
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error.message,
+    });
   }
 };
