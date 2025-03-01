@@ -91,20 +91,6 @@ export const addFriend = async (req: Request, res: Response) => {
       { new: true }
     ).populate("friends", "-__v");
 
-    // const { username, friendId } = req.body;
-    // const { friendId } = req.params;
-
-    // const newFriend = {
-    //   username,
-    //   friendId,
-    // };
-
-    // await User.findByIdAndUpdate(
-    //   userId,
-    //   { $push: { friends: newFriend } },
-    //   { new: true, runValidators: true }
-    // );
-
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found!" });
     }
@@ -130,19 +116,6 @@ export const removeFriend = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "User not found!" });
     }
     return res.json(updatedUser);
-
-    // try {
-    //   const user = await User.findOneAndUpdate(
-    //     { _id: req.params.userId },
-    //     { $pull: { friends: { friendId: req.body.friendId } } },
-    //     { new: true }
-    //   );
-
-    //   if (!friendId) {
-    //     res.status(404).json({ message: "No friend with this id!" });
-    //   }
-
-    //   res.json(friendId);
   } catch (error: any) {
     return res.status(400).json({
       message: error.message,
